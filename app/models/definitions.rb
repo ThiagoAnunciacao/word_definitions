@@ -1,0 +1,3 @@
+class Definitions < ApplicationRecord
+
+end

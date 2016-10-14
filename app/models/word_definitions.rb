@@ -1,0 +1,3 @@
+class WordDefinitions < ApplicationRecord
+
+end

@@ -1,0 +1,3 @@
+class Translations < ApplicationRecord
+
+end

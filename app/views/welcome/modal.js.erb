@@ -1,0 +1,3 @@
+$('#myModal .modal-body').html('loading...');
+
+$('#myModal .modal-body').html("<%= escape_javascript render('modal', definitions: @definitions, translations: @translations) %>");

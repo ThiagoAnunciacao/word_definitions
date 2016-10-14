@@ -1,0 +1,116 @@
+<style>
+.word {
+  background: #CCC;
+  padding-left: 10px;
+}
+.btn.btn-outline-primary {
+  margin: 5px;
+}
+</style>
+
+<br/>
+
+<%= form_tag(welcome_index_path, method: 'post', class: 'form-inline') do %>
+  <div class="form-group">
+    <label>Page</label>
+    <input type="text" class="form-control span1" name="page" value="<%= params[:page] %>" />
+  </div>
+  <div class="form-group">
+    <label>Search word</label>
+    <input type="text" class="form-control" name="word" value="<%= params[:word] %>" />
+  </div>
+
+  <button class="btn btn-primary" type="submit">Filtrar</button>
+
+  <br/>
+  <br/>
+
+  <div class="btn-group filter-chars" data-toggle="buttons">
+    <%
+    ('A'..'Z').each do |char|
+      active = params[:char] == char ? 'active' : ''
+
+      checked = params[:char] == char ? 'checked' : ''
+    %>
+
+      <label class="btn btn-primary <%= active %>">
+        <input type="radio" name="char" value="<%= char %>" id="option<%= char %>" autocomplete="off" <%= checked %> />
+        <%= char %>
+      </label>
+  <% end %>
+  </div>
+<% end %>
+
+<hr/>
+
+<div style="clear: both"></div>
+
+<div>
+  <%
+  if @book_words.present?
+    @book_words.each do |word|
+  %>
+
+      <button type="button" class="btn btn-outline-primary" data-word="<%= word.word %>" data-toggle="modal" data-target="#myModal">
+        <%= word.word %>
+      </button>
+  <% end
+  else
+  %>
+    <h3>Nenhuma palavra encontrada!</h3>
+  <% end %>
+</div>
+
+<br/><br/>
+<br/>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Word: <b></b></h4>
+      </div>
+      <div class="modal-body">
+        loading...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#myModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var word = button.data('word');
+    var modal = $(this);
+    modal.find('.modal-title b').text(word);
+
+    $.ajax({
+      type: "get",
+      url: "<%= welcome_show_path %>",
+      data: { word: word },
+      complete: function() {
+
+      }
+    });
+  });
+
+  $('.filter-chars .btn.btn-primary.active').on('click', function() {
+    $('input[type=radio]:checked').attr('checked', false);
+    $(this).removeClass('active');
+    $('form').submit();
+  });
+
+  $(document).on('change', '.filter-chars', function (event) {
+    $('form').submit();
+  });
+});
+</script>

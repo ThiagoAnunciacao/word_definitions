@@ -1,0 +1,3 @@
+class BookWords < ApplicationRecord
+
+end
