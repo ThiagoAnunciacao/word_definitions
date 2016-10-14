@@ -36,3 +36,10 @@ To have launchd start mysql now and restart at login:
 Or, if you don't want/need a background service you can just run:
   mysql.server start
 
+# Links importantes
+
+https://wordnik.com/users/thiago.anunciacao
+
+http://developer.wordnik.com/docs.html#!/word/getDefinitions_get_2
+
+https://github.com/wordnik/wordnik-ruby
